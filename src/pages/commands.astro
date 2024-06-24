@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="commands">
+  <main>
+    <div class="mb-4">
+      <h1 class="flex flex-col justify-center items-center p-4">
+        <span class="mr-2"
+          >prefix: <span class="text-stone-200 hover:text-stone-300">,</span> |
+          example: <span class="text-stone-200 hover:text-stone-300">,ping</span
+          ></span
+        >
+      </h1>
+      <pre
+        class="overflow-auto text-white rounded-md p-4"
+        id="commands">loading...</pre>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const body = await fetch("http://localhost:59076/commands");
+
+  const data = await body.json();
+
+  const commands = data.commands
+    .split("\n")
+    .map((command: string) => command.trim())
+    .filter((command: string) => command.length > 0);
+
+  const commandsElement = document.getElementById("commands");
+
+  if (commandsElement) {
+    commandsElement.innerText = commands.join("\n");
+  } else {
+    console.error("commands element not found");
+  }
+</script>

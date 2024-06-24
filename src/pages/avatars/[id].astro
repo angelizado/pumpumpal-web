@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="history">
+  <p id="loading" class="flex justify-center items-center h-screen select-none">
+    Loading...
+  </p>
+  <main class="m-2 grid gap-2 grid-cols-3 lg:grid-cols-7" id="avatars"></main>
+</Layout>
+
+<script>
+  const id = window.location.pathname.split("/").pop();
+  let avatars: string[] = [];
+
+  async function fetchAvatars() {
+    const response = await fetch(`https://dev.shiro.wtf/avatars/${id}`);
+    const data = await response.json();
+    const loadingElement = document.getElementById("loading");
+    if (!data.success) {
+      if (!loadingElement) return;
+      loadingElement.innerHTML = `<p class="text-red-500">${data.error}</p>`;
+    }
+    avatars = data.avatars;
+    if (avatars.length === 0) {
+      if (!loadingElement) return;
+      loadingElement.innerHTML = `<p class="text-red-500">No avatars found</p>`;
+      return;
+    }
+    renderAvatars();
+  }
+
+  function renderAvatars() {
+    const avatarElement = document.getElementById("avatars");
+    const loadingElement = document.getElementById("loading");
+    if (!avatarElement || !loadingElement) return;
+    loadingElement.remove();
+    avatars.forEach((avatar: string) => {
+      const link = document.createElement("a");
+      link.href = avatar;
+      const img = document.createElement("img");
+      img.src = avatar;
+      img.width = 500;
+      img.height = 500;
+      img.alt = "avatar";
+      link.appendChild(img);
+      avatarElement.appendChild(link);
+    });
+  }
+
+  fetchAvatars();
+</script>

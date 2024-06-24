@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/support",
+      "destination": "https://discord.gg/M3Jt2reYSp",
+      "statusCode": 301
+    },
+    {
+      "source": "/invite",
+      "destination": "https://discord.com/oauth2/authorize?client_id=1247499532950966313&scope=bot+applications.commands",
+      "statusCode": 301
+    }
+  ]
+}
